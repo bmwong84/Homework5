@@ -1,0 +1,126 @@
+f(n) = 2n
+void LinkedList::operator +(LinkedList & right)
+{
+	LinkedList tempList;					
+	Node *currentAPtr, *currentBPtr;		
+	currentAPtr = headPtr;
+	currentBPtr = right.headPtr;
+	while (currentAPtr != nullptr)							//f(n) = n
+	{
+		tempList.insertAtBack(currentAPtr->data);
+		currentAPtr = currentAPtr->nextPtr;
+	}
+	while (currentBPtr != nullptr)							//f(n) = n 
+	{
+		tempList.insertAtBack(currentBPtr->data);
+		currentBPtr = currentBPtr->nextPtr;
+	}
+	std::cout << "Displaying concactenated lists" << std::endl;
+	tempList.printData();
+}
+
+f(n) = n*(n+ (n-1)+(n-2)+(n-3)...etc 3,2,1) + n = n^3
+void LinkedList::operator -(LinkedList & right)
+{
+	LinkedList tempList;
+	Node *tempHeadPtr, *tempCurrentPtr, *tempTempPtr, *currentPtr;
+	tempCurrentPtr = nullptr;
+	tempHeadPtr = nullptr;
+	tempTempPtr = nullptr;
+	currentPtr = headPtr;
+	//copy the left hand side list to tempList
+
+	while (currentPtr != nullptr)			//f(n) = n
+	{
+		tempCurrentPtr = new Node;
+		if (tempTempPtr == nullptr)
+		{
+			tempHeadPtr = tempCurrentPtr;
+		}
+		if (tempTempPtr != nullptr)		
+		{
+			tempTempPtr->nextPtr = tempCurrentPtr;
+		}
+		tempTempPtr = tempCurrentPtr;
+		tempCurrentPtr->data = currentPtr->data;
+		currentPtr = currentPtr->nextPtr;
+	}
+	printData(tempHeadPtr);
+
+	tempList.headPtr = tempHeadPtr;
+	tempCurrentPtr = tempHeadPtr;
+	Node* rightCurrentPtr;
+	rightCurrentPtr = right.headPtr;		
+
+	while (rightCurrentPtr != nullptr)				//f(n) = n
+	{
+		tempCurrentPtr = tempHeadPtr;
+		int count = 1;
+		while (tempCurrentPtr != nullptr)			//f(n) = n
+		{
+			if (rightCurrentPtr->data == tempCurrentPtr->data)
+			{
+				tempList.deleteBeforePosition(count);		//f(n) = n
+				tempHeadPtr=tempList.headPtr;			//here adds n-1, n-2, n-3 etc.
+				tempCurrentPtr = tempHeadPtr;			
+				rightCurrentPtr = right.headPtr;		//here adds n-1, n-2, n-3 etc.
+				break;
+			}
+			tempCurrentPtr = tempCurrentPtr->nextPtr;
+			count++;
+		}
+		rightCurrentPtr = rightCurrentPtr->nextPtr;
+	}
+	std::cout << "Displaying difference between the two lists" << std::endl;
+	tempList.printData();
+}
+
+f(n) = n
+bool LinkedList::deleteBeforePosition(int index)
+{
+	int count = 1;
+	if (headPtr == nullptr)			
+	{
+		std::cout << "Linked list does not have any nodes to delete" << std::endl;
+		return false;
+	}
+	else if (index <= 0)
+	{
+		std::cout << "Index is out of bounds" << std::endl;
+		return false;
+	}
+	else
+	{
+		Node* currentPtr, *previousPtr;		
+		previousPtr = nullptr;			
+		for (currentPtr = headPtr; currentPtr != nullptr; previousPtr = currentPtr, currentPtr = currentPtr->nextPtr)		//f(n) = n
+		{
+			if (count == index)
+			{
+				if (previousPtr == nullptr)		
+				{
+					headPtr = currentPtr->nextPtr;		
+					std::cout << "Node " << index << " removed" << std::endl;
+					delete currentPtr;		
+					return true;
+				}
+				else
+				{
+					previousPtr->nextPtr = currentPtr->nextPtr;		
+					std::cout << "Node " << index << " removed" << std::endl;
+					delete currentPtr;		
+					return true;
+				}
+			}
+			count++;	
+		}
+		if (index > count)
+		{
+			std::cout << "Cannot delete; list does not contain that many nodes" << std::endl;
+			return false;
+		}
+	}
+}
+
+
+2n + n + n^3 = O(n^3)
